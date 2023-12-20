@@ -1,0 +1,1 @@
+utils::globalVariables(c("2.5%", "50%", "97.5%", "Rhat", "true_val", "var"))
