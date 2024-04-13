@@ -7,20 +7,20 @@ data {
   int<lower=1>             tg;         // length of time grid
 
   // --- Individual level data
-  int<lower=0, upper=1>    Z[n];       // treatment assignment
-  int<lower=0, upper=1>    S[n];       // observed ICE development
-  int<lower=0, upper=1>    S_trt[nt];  // observed ICE development for treated patients
-  real<lower=0>            TIME[n];    // time to event (endpoint)
-  int<lower=0, upper=1>    EVENT[n];   // event yes or no
+  array[n] int<lower=0, upper=1>    Z;       // treatment assignment
+  array[n] int<lower=0, upper=1>    S;       // observed ICE development
+  array[nt] int<lower=0, upper=1>    S_trt;  // observed ICE development for treated patients
+  array[n] real<lower=0>            TIME;    // time to event (endpoint)
+  array[n] int<lower=0, upper=1>    EVENT;   // event yes or no
   matrix[n,p]              X;          // covariate value for each patient
   matrix[nt,p]             X_trt;      // covariate value for each treated patient
 
   // --- Prior parameters
   matrix[p,2]              prior_delta;
-  real<lower=0>            prior_0N[2];
-  real<lower=0>            prior_1N[2];
-  real<lower=0>            prior_0T[2];
-  real<lower=0>            prior_1T[2];
+  array[2] real<lower=0>            prior_0N;
+  array[2] real<lower=0>            prior_1N;
+  array[2] real<lower=0>            prior_0T;
+  array[2] real<lower=0>            prior_1T;
   
   // --- Time grid for RMST
   vector[tg]  t_grid;
@@ -93,10 +93,10 @@ generated quantities {
   
   // Restricted mean survival time
   for (t in 1:tg) {
-    S_0N[t] = 1-exponential_cdf(t_grid[t], lambda_0N);
-    S_1N[t] = 1-exponential_cdf(t_grid[t], lambda_1N);
-    S_0T[t] = 1-exponential_cdf(t_grid[t], lambda_0T);
-    S_1T[t] = 1-exponential_cdf(t_grid[t], lambda_1T);
+    S_0N[t] = 1-exponential_cdf(t_grid[t] | lambda_0N);
+    S_1N[t] = 1-exponential_cdf(t_grid[t] | lambda_1N);
+    S_0T[t] = 1-exponential_cdf(t_grid[t] | lambda_0T);
+    S_1T[t] = 1-exponential_cdf(t_grid[t] | lambda_1T);
   }
   rmst_0N = 0; 
   rmst_1N = 0; 

@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/BPrinStratTTE)](https://CRAN.R-project.org/package=BPrinStratTTE)
 <!-- badges: end -->
 
 Bayesian models to estimate causal effects of biological treatments on
@@ -111,7 +113,15 @@ clinical trials,” *Stat Med*, 41, 3837–387.
 
 ## Installation
 
-The `BPrinStratTTE` package can be installed from GitHub with:
+The current stable version of the package can be installed from CRAN
+with:
+
+``` r
+install.packages("BPrinStratTTE")
+```
+
+The development version of the package can be installed from GitHub
+with:
 
 ``` r
 if (!require("remotes")) {install.packages("remotes")}

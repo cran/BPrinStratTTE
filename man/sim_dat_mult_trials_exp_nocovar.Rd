@@ -23,13 +23,14 @@ d_params_nocovar <- list(
   nt = 250L,
   prob_ice = 0.5,
   fu_max = 336L,
+  prop_cens = 0.15,
   T0T_rate = 0.2,
   T0N_rate = 0.2,
   T1T_rate = 0.15,
   T1N_rate = 0.1
 )
 dat_mult_trials <- sim_dat_mult_trials_exp_nocovar(
-  n_iter = 3,
+  n_iter = 3L,
   params = d_params_nocovar 
 )
 lapply(dat_mult_trials, dim)

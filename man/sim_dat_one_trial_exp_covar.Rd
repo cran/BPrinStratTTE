@@ -11,6 +11,7 @@ sim_dat_one_trial_exp_covar(
   prob_ice_X1,
   prob_ice_X0,
   fu_max,
+  prop_cens = 0,
   T0T_rate,
   T0N_rate,
   T1T_rate,
@@ -29,6 +30,8 @@ sim_dat_one_trial_exp_covar(
 \item{prob_ice_X0}{Numeric value on the interval \eqn{(0,1)}, probability of the intercurrent event of interest if treated and not at high risk of the intercurrent event.}
 
 \item{fu_max}{Positive integer value, maximum follow-up time in days (administrative censoring assumed afterwards).}
+
+\item{prop_cens}{Numeric value on the interval \eqn{[0,1)}, proportion of uniformly censored patients (default is 0).}
 
 \item{T0T_rate}{Positive numeric value, monthly event rate in control subjects that would develop the intercurrent event if treated.}
 
@@ -51,8 +54,9 @@ d_params_covar <- list(
   prob_X1 = 0.4, 
   prob_ice_X1 = 0.5, 
   prob_ice_X0 = 0.2,
-  fu_max = 48*7,       
-  T0T_rate = 0.2,     
+  fu_max = 48*7, 
+  prop_cens = 0.15,
+  T0T_rate = 0.2,      
   T0N_rate = 0.2,     
   T1T_rate = 0.15,     
   T1N_rate = 0.1
@@ -63,7 +67,8 @@ dat_single_trial <- sim_dat_one_trial_exp_covar(
   prob_X1 = d_params_covar[["prob_X1"]],
   prob_ice_X1 = d_params_covar[["prob_ice_X1"]],
   prob_ice_X0 = d_params_covar[["prob_ice_X0"]],
-  fu_max = d_params_covar[["fu_max"]],  
+  fu_max = d_params_covar[["fu_max"]],
+  prop_cens = d_params_covar[["prop_cens"]],  
   T0T_rate = d_params_covar[["T0T_rate"]],
   T0N_rate = d_params_covar[["T0N_rate"]],
   T1T_rate = d_params_covar[["T1T_rate"]],

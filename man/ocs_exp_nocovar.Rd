@@ -28,6 +28,7 @@ d_params_nocovar <- list(
   nt = 250L,
   prob_ice = 0.5,
   fu_max = 336L,
+  prop_cens = 0.15,
   T0T_rate = 0.2,
   T0N_rate = 0.2,
   T1T_rate = 0.15,

@@ -15,14 +15,15 @@
 #'   prob_X1 = 0.4, 
 #'   prob_ice_X1 = 0.5, 
 #'   prob_ice_X0 = 0.2,
-#'   fu_max = 48*7,       
+#'   fu_max = 336L,   
+#'   prop_cens = 0.15,    
 #'   T0T_rate = 0.2,     
 #'   T0N_rate = 0.2,     
 #'   T1T_rate = 0.15,     
 #'   T1N_rate = 0.1
 #'  )
 #' dat_mult_trials <- sim_dat_mult_trials_exp_covar(
-#'   n_iter = 3,
+#'   n_iter = 3L,
 #'   params = d_params_covar 
 #' )
 #' lapply(dat_mult_trials, dim)
@@ -37,13 +38,14 @@ sim_dat_mult_trials_exp_covar <- function(n_iter, params) {
       prob_X1     = params[["prob_X1"]], 
       prob_ice_X1 = params[["prob_ice_X1"]], 
       prob_ice_X0 = params[["prob_ice_X0"]],
-      fu_max      = params[["fu_max"]],       
+      fu_max      = params[["fu_max"]],
+      prop_cens   = params[["prop_cens"]],
       T0T_rate    = params[["T0T_rate"]],     
       T0N_rate    = params[["T0N_rate"]],     
       T1T_rate    = params[["T1T_rate"]],     
       T1N_rate    = params[["T1N_rate"]] 
     ),
-    simplify = F
+    simplify = FALSE
   ) %>%
     lapply(FUN = function(x) x[!(names(x) %in% c("PAT_ID","T0N","T0T","T1N","T1T"))])
 }

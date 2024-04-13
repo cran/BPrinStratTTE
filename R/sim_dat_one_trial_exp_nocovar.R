@@ -4,6 +4,7 @@
 #' @param nt Positive integer value, number of treated subjects.
 #' @param prob_ice Numeric value on the interval \eqn{(0,1)}, probability of the intercurrent event of interest (i.e. the event that determines the principal stratum membership).
 #' @param fu_max Positive integer value, maximum follow-up time in days (administrative censoring assumed afterwards).
+#' @param prop_cens Numeric value on the interval \eqn{[0,1)}, proportion of uniformly censored patients (default is 0). 
 #' @param T0T_rate Positive numeric value, monthly event rate in control subjects that would develop the intercurrent event if treated.
 #' @param T0N_rate Positive numeric value, monthly event rate in control subjects that never develop the intercurrent event.
 #' @param T1T_rate Positive numeric value, monthly event rate in treated subjects that develop the intercurrent event.
@@ -20,6 +21,7 @@
 #'   nt = 250L,
 #'   prob_ice = 0.5,
 #'   fu_max = 336L,
+#'   prop_cens = 0.15,
 #'   T0T_rate = 0.2,
 #'   T0N_rate = 0.2,
 #'   T1T_rate = 0.15,
@@ -29,7 +31,8 @@
 #'   n = d_params_nocovar[["n"]], 
 #'   nt = d_params_nocovar[["nt"]],
 #'   prob_ice = d_params_nocovar[["prob_ice"]],
-#'   fu_max = d_params_nocovar[["fu_max"]],  
+#'   fu_max = d_params_nocovar[["fu_max"]],
+#'   prop_cens = d_params_nocovar[["prop_cens"]],  
 #'   T0T_rate = d_params_nocovar[["T0T_rate"]],
 #'   T0N_rate = d_params_nocovar[["T0N_rate"]],
 #'   T1T_rate = d_params_nocovar[["T1T_rate"]],
@@ -39,14 +42,15 @@
 #' head(dat_single_trial)
 #' 
 sim_dat_one_trial_exp_nocovar <- function(
-  n,             # number of patients
-  nt,            # number of treated patients
-  prob_ice,      # prob ICE 
-  fu_max,        # maximum follow-up (days)
-  T0T_rate,      # monthly event rate in controls TD
-  T0N_rate,      # monthly event rate in controls ND
-  T1T_rate,      # monthly event rate in treated TD
-  T1N_rate       # monthly event rate in treated ND
+    n,             # number of patients
+    nt,            # number of treated patients
+    prob_ice,      # prob ICE 
+    fu_max,        # maximum follow-up (days)
+    prop_cens = 0, # proportion of censored patients
+    T0T_rate,      # monthly event rate in controls TD
+    T0N_rate,      # monthly event rate in controls ND
+    T1T_rate,      # monthly event rate in treated TD
+    T1N_rate       # monthly event rate in treated ND
 ) {
   # baseline data
   Z  <- sample(c(rep(0L, n - nt), rep(1L, nt)))
@@ -54,8 +58,18 @@ sim_dat_one_trial_exp_nocovar <- function(
   G <- sample(c(0L, 1L), size = n, prob = c(1 - prob_ice, prob_ice), replace = T)
   S <- G
   S[Z==0L] <- 0L
+  # censoring
+  n_cens <- n * prop_cens
+  if (n_cens > 0) {
+    pat_cens <- sample(x = 1:n, size = n_cens) |> sort()
+    unif_cens <- runif(n = length(pat_cens), min = 1, max = fu_max)
+    cens <- rep(fu_max, n)
+    cens[pat_cens] <- unif_cens
+    } 
+  if (n_cens == 0) {
+    cens <- rep(fu_max, n)
+    }
   # time to event endpoint data by principal stratum
-  cens <- runif(n = n, min = 1, max = fu_max)
   T0T <- rexp(n = n, rate = T0T_rate) * 30
   T0N <- rexp(n = n, rate = T0N_rate) * 30
   T1T <- rexp(n = n, rate = T1T_rate) * 30
@@ -87,7 +101,8 @@ sim_dat_one_trial_exp_nocovar <- function(
       T0N = T0N,
       T0T = T0T,
       T1N = T1N,
-      T1T = T1T
+      T1T = T1T, 
+      CENS_TIME = cens
     )
   ) 
 }

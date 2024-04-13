@@ -9,6 +9,7 @@ sim_dat_one_trial_exp_nocovar(
   nt,
   prob_ice,
   fu_max,
+  prop_cens = 0,
   T0T_rate,
   T0N_rate,
   T1T_rate,
@@ -23,6 +24,8 @@ sim_dat_one_trial_exp_nocovar(
 \item{prob_ice}{Numeric value on the interval \eqn{(0,1)}, probability of the intercurrent event of interest (i.e. the event that determines the principal stratum membership).}
 
 \item{fu_max}{Positive integer value, maximum follow-up time in days (administrative censoring assumed afterwards).}
+
+\item{prop_cens}{Numeric value on the interval \eqn{[0,1)}, proportion of uniformly censored patients (default is 0).}
 
 \item{T0T_rate}{Positive numeric value, monthly event rate in control subjects that would develop the intercurrent event if treated.}
 
@@ -44,6 +47,7 @@ d_params_nocovar <- list(
   nt = 250L,
   prob_ice = 0.5,
   fu_max = 336L,
+  prop_cens = 0.15,
   T0T_rate = 0.2,
   T0N_rate = 0.2,
   T1T_rate = 0.15,
@@ -53,7 +57,8 @@ dat_single_trial <- sim_dat_one_trial_exp_nocovar(
   n = d_params_nocovar[["n"]], 
   nt = d_params_nocovar[["nt"]],
   prob_ice = d_params_nocovar[["prob_ice"]],
-  fu_max = d_params_nocovar[["fu_max"]],  
+  fu_max = d_params_nocovar[["fu_max"]],
+  prop_cens = d_params_nocovar[["prop_cens"]],  
   T0T_rate = d_params_nocovar[["T0T_rate"]],
   T0N_rate = d_params_nocovar[["T0N_rate"]],
   T1T_rate = d_params_nocovar[["T1T_rate"]],
